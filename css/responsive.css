@@ -1,0 +1,412 @@
+﻿/* ============================================================
+   RECORD MEDIA — RESPONSIVE STYLESHEET
+   ============================================================ */
+
+/* ── MOBILE: max 767px ───────────────────────────────────── */
+@media (max-width: 767px) {
+  :root {
+    --nav-h: 65px;
+  }
+
+  /* NAV — mobile hamburger */
+  .navbar__links {
+    display: none;
+    position: fixed;
+    top: var(--nav-h);
+    left: 0;
+    width: 100%;
+    background: rgba(13, 13, 13, 0.98);
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 20px 0;
+    z-index: 200;
+    border-top: 1px solid #222;
+    backdrop-filter: blur(12px);
+  }
+
+  .navbar__links.open {
+    display: flex;
+  }
+
+  .navbar__links a {
+    width: 100%;
+    text-align: center;
+    padding: 14px 20px;
+    border-bottom: 1px solid #1e1e1e;
+    font-size: 14px;
+  }
+
+  /* Disable the desktop bracket frame inside the mobile dropdown */
+  .navbar__links a::before,
+  .navbar__links a::after {
+    display: none;
+  }
+
+  .navbar__links a.active {
+    border: none;
+    border-bottom: 1px solid #1e1e1e;
+    background: rgba(255, 0, 0, 0.08);
+    color: var(--red);
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .navbar__cta {
+    display: none;
+  }
+
+  /* HERO */
+  .hero__content {
+    padding: 0 20px 60px 20px;
+    max-width: 100%;
+  }
+
+  .hero__title-big {
+    font-size: 36px;
+    letter-spacing: 0;
+  }
+
+  .hero__title {
+    font-size: 14px;
+  }
+
+  .hero__pre {
+    font-size: 13px;
+  }
+
+  .scroll-indicator {
+    left: 20px;
+    bottom: 20px;
+  }
+
+  /* SECTIONS */
+  .section-pad {
+    padding: 60px 0;
+  }
+
+  /* WHO WE ARE */
+  .who-section {
+    padding: 60px 0;
+  }
+
+  .who-section__inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 20px;
+  }
+
+  .who-section__images {
+    grid-template-rows: 160px 120px;
+  }
+
+  .section-title {
+    font-size: 32px;
+  }
+
+  /* QUOTE */
+  .quote-section {
+    padding: 60px 20px;
+  }
+
+  .quote-section__text {
+    font-size: 22px;
+  }
+
+  /* HOME SERVICES */
+  .home-services__header {
+    padding: 0 20px;
+    flex-direction: column;
+  }
+
+  .service-row {
+    min-height: 200px;
+  }
+
+  .service-row__content {
+    padding: 0 20px;
+  }
+
+  .service-row__title {
+    font-size: 26px;
+  }
+
+  /* WORKS */
+  .works-grid {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+  }
+
+  .works-tabs {
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 0 20px;
+  }
+
+  .works-tab {
+    font-size: 12px;
+  }
+
+  /* PARTNERS */
+  .partners-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 100%;
+    margin: 0 20px;
+  }
+
+  .partner-cell:nth-child(2n) {
+    border-right: none;
+  }
+
+  .partner-cell:nth-child(3n) {
+    border-right: 1px solid #333;
+  }
+
+  .partner-cell:nth-child(2n) {
+    border-right: none;
+  }
+
+  /* TICKER */
+  .ticker-item {
+    font-size: 30px;
+  }
+
+  /* CTA */
+  .cta-section__content {
+    padding: 40px 20px;
+  }
+
+  .cta-section__title {
+    font-size: 32px;
+  }
+
+  .cta-section__sub {
+    font-size: 18px;
+  }
+
+  /* FOOTER */
+  .footer__inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 20px;
+  }
+
+  .footer {
+    padding: 50px 0 30px;
+  }
+
+  /* SERVICE PAGE */
+  .service-section__content {
+    padding: 80px 20px 80px 20px;
+    max-width: 100%;
+  }
+
+  .service-section__num {
+    font-size: 36px;
+  }
+
+  .service-section__title {
+    font-size: 38px;
+  }
+
+  .service-nav-pill {
+    display: none;
+  }
+
+  /* SHOWROOM */
+  .showroom-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 10px;
+  }
+
+  /* TEAM */
+  .team-section__heading {
+    font-size: 42px;
+  }
+
+  .team-card {
+    width: 200px;
+  }
+
+  .team-card__photo {
+    height: 250px;
+  }
+
+  /* CONTACT */
+  .contact-section__inner {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+  }
+
+  .contact-section__right-heading {
+    font-size: 32px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-radios {
+    gap: 14px;
+  }
+
+  /* STATS */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 20px;
+  }
+
+  /* BLOGS */
+  .blogs-grid {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+  }
+
+  /* CAREERS */
+  .careers-grid {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+  }
+
+  .careers-section__title h2 {
+    font-size: 32px;
+  }
+
+  /* KNOWLEDGE */
+  .knowledge-section__title {
+    font-size: 36px;
+  }
+
+  .knowledge-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .knowledge-grid__right {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 160px 160px;
+  }
+
+  .knowledge-grid__left-content {
+    padding: 30px 20px;
+  }
+
+  /* KNOWLEDGE IS POWER (home) */
+  .knowledge {
+    padding: 60px 20px;
+  }
+
+  .knowledge__banner {
+    height: 160px;
+  }
+
+  .knowledge__banner-content {
+    padding: 0 0 20px 20px;
+  }
+
+  .knowledge__banner-title {
+    font-size: 30px;
+  }
+
+  .knowledge__grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 240px;
+  }
+
+  .knowledge__cell-content {
+    padding: 24px;
+  }
+
+  /* SERVICES OVERVIEW */
+  .services-overview__inner {
+    padding: 0 20px;
+  }
+
+  .services-overview__row-text {
+    padding: 30px 20px;
+  }
+
+  .services-overview__row-title {
+    font-size: 26px;
+  }
+
+  /* ABOUT */
+  .about-who {
+    padding: 60px 0;
+  }
+
+  /* HERO content */
+  .page-hero__content {
+    padding-left: 20px;
+    padding-bottom: 80px;
+  }
+}
+
+/* ── VERY SMALL MOBILE: max 480px ────────────────────────── */
+@media (max-width: 480px) {
+  .hero__title-big {
+    font-size: 30px;
+  }
+
+  .section-title {
+    font-size: 26px;
+  }
+
+  .quote-section__text {
+    font-size: 18px;
+  }
+
+  .cta-section__title {
+    font-size: 26px;
+  }
+
+  .service-section__title {
+    font-size: 32px;
+  }
+
+  .team-section__heading {
+    font-size: 34px;
+  }
+
+  .stat-item__num {
+    font-size: 40px;
+  }
+
+  .showroom-grid {
+    grid-template-columns: 1fr;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+
+  .partners-grid {
+    grid-template-columns: 1fr;
+    margin: 0 20px;
+  }
+
+  .partner-cell {
+    border-right: none !important;
+  }
+
+  .partner-cell:last-child {
+    border-bottom: none;
+  }
+
+  .works-tabs {
+    justify-content: center;
+  }
+
+  .footer__newsletter-form {
+    flex-direction: column;
+  }
+
+  .footer__newsletter-form input {
+    border-right: 1px solid #333;
+    border-radius: 4px;
+  }
+
+  .footer__newsletter-form button {
+    border-radius: 4px;
+    padding: 10px;
+  }
+}
