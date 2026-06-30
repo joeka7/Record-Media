@@ -2,42 +2,78 @@
    RECORD MEDIA — RESPONSIVE STYLESHEET
    ============================================================ */
 
-/* ── MOBILE: max 767px ───────────────────────────────────── */
-@media (max-width: 767px) {
-  :root {
-    --nav-h: 65px;
+/* ── OFF-CANVAS NAV DRAWER: mobile + tablet (max 1024px) ─────
+   Below the desktop breakpoint the inline nav becomes a left
+   slide-in drawer. The backdrop element (.nav-backdrop) and the
+   ARIA wiring are added by js/script.js — no per-page HTML needed.
+   Desktop (>=1025px) keeps the original inline nav untouched. */
+@media (max-width: 1024px) {
+  /* Lift the whole bar above the backdrop so the hamburger stays
+     tappable (to close) while the drawer + backdrop are open. */
+  .navbar {
+    z-index: 350;
   }
 
-  /* NAV — mobile hamburger */
-  .navbar__links {
-    display: none;
-    position: fixed;
-    top: var(--nav-h);
-    left: 0;
-    width: 100%;
-    background: rgba(13, 13, 13, 0.98);
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    padding: 20px 0;
-    z-index: 200;
-    border-top: 1px solid #222;
-    backdrop-filter: blur(12px);
-  }
-
-  .navbar__links.open {
+  /* Show the hamburger; hide the inline desktop CTA */
+  .menu-toggle {
+    position: relative;
+    z-index: 360; /* above the drawer panel within the bar */
     display: flex;
   }
 
-  .navbar__links a {
-    width: 100%;
-    text-align: center;
-    padding: 14px 20px;
-    border-bottom: 1px solid #1e1e1e;
-    font-size: 14px;
+  .navbar__cta {
+    display: none;
   }
 
-  /* Disable the desktop bracket frame inside the mobile dropdown */
+  /* The links list becomes the off-canvas drawer panel */
+  .navbar__links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    height: 100dvh;
+    width: 300px;
+    max-width: 82vw;
+    background: rgba(13, 13, 13, 0.98);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-right: 1px solid #222;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    padding: calc(var(--nav-h) + 10px) 0 30px;
+    z-index: 300;
+    overflow-y: auto;
+    /* Hidden off-screen to the left, slides in when .open is set */
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: hidden;
+  }
+
+  .navbar__links.open {
+    transform: translateX(0);
+    visibility: visible;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Touch-friendly stacked links */
+  .navbar__links li {
+    width: 100%;
+  }
+
+  .navbar__links a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 52px;
+    padding: 14px 28px;
+    border-bottom: 1px solid #1e1e1e;
+    font-size: 15px;
+    letter-spacing: 1px;
+  }
+
+  /* Disable the desktop bracket-frame hover animation inside the drawer */
   .navbar__links a::before,
   .navbar__links a::after {
     display: none;
@@ -50,12 +86,48 @@
     color: var(--red);
   }
 
-  .menu-toggle {
-    display: flex;
+  .navbar__links a:hover,
+  .navbar__links a:focus-visible {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--red);
   }
 
-  .navbar__cta {
-    display: none;
+  /* CTA surfaced inside the drawer (injected by JS as a list item) */
+  .navbar__links .navbar__drawer-cta {
+    display: block;
+    padding: 24px 28px 0;
+    border-bottom: none;
+  }
+
+  .navbar__links .navbar__drawer-cta .btn-contact {
+    width: 100%;
+    padding: 14px 26px;
+    font-size: 15px;
+  }
+
+  /* Semi-transparent backdrop behind the drawer (injected by JS) */
+  .nav-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 250;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.35s ease,
+      visibility 0.35s ease;
+  }
+
+  .nav-backdrop.open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* ── MOBILE: max 767px ───────────────────────────────────── */
+@media (max-width: 767px) {
+  :root {
+    --nav-h: 65px;
   }
 
   /* HERO */
@@ -98,8 +170,14 @@
     padding: 0 20px;
   }
 
+  /* Image mosaic is a flex row of 3 columns — shrink its height on mobile */
   .who-section__images {
-    grid-template-rows: 160px 120px;
+    height: 360px;
+    gap: 10px;
+  }
+
+  .who-section__img--red {
+    flex: 0 0 70px;
   }
 
   .section-title {
@@ -113,6 +191,22 @@
 
   .quote-section__text {
     font-size: 22px;
+  }
+
+  /* Shrink the decorative circles so they don't cause horizontal scroll */
+  .quote-section__deco {
+    width: 220px;
+    height: 220px;
+  }
+
+  .quote-section__deco--tr {
+    top: -70px;
+    right: -80px;
+  }
+
+  .quote-section__deco--bl {
+    bottom: -70px;
+    left: -80px;
   }
 
   /* HOME SERVICES */
@@ -140,13 +234,14 @@
   }
 
   .works-tabs {
-    gap: 20px;
+    gap: 14px 20px;
     flex-wrap: wrap;
     padding: 0 20px;
   }
 
   .works-tab {
     font-size: 12px;
+    padding-bottom: 8px;
   }
 
   /* PARTNERS */
@@ -186,6 +281,13 @@
     font-size: 18px;
   }
 
+  /* SOCIAL BAR */
+  .social-bar {
+    gap: 22px;
+    padding: 20px;
+    flex-wrap: wrap;
+  }
+
   /* FOOTER */
   .footer__inner {
     grid-template-columns: 1fr;
@@ -222,8 +324,17 @@
   }
 
   /* TEAM */
+  .team-section__header {
+    padding: 36px 20px;
+  }
+
   .team-section__heading {
     font-size: 42px;
+  }
+
+  /* Reduce side gutters so cards use more of the screen */
+  .team-carousel {
+    padding: 0 20px;
   }
 
   .team-card {
@@ -245,11 +356,31 @@
   /* CONTACT */
   .contact-section__inner {
     grid-template-columns: 1fr;
+    gap: 30px;
     padding: 0 20px;
   }
 
+  .contact-section__right-label {
+    font-size: 15px;
+    text-align: left;
+  }
+
   .contact-section__right-heading {
-    font-size: 32px;
+    font-size: 38px;
+    text-align: left;
+    margin-bottom: 24px;
+  }
+
+  .contact-info-card {
+    padding: 36px 26px;
+  }
+
+  .contact-info-card h3 {
+    font-size: 24px;
+  }
+
+  .contact-info-card > p {
+    margin-bottom: 40px;
   }
 
   .form-row {
@@ -257,7 +388,24 @@
   }
 
   .form-radios {
-    gap: 14px;
+    gap: 14px 18px;
+  }
+
+  /* Touch-friendly inputs + full-width submit */
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    font-size: 16px; /* >=16px prevents iOS zoom-on-focus */
+    padding: 12px 0;
+  }
+
+  .form-submit {
+    text-align: center;
+  }
+
+  .form-submit button {
+    width: 100%;
+    padding: 16px 24px;
   }
 
   /* STATS */
@@ -345,6 +493,16 @@
     padding: 0 20px;
   }
 
+  /* Collapse the 1fr/2fr row into a stacked single column */
+  .services-overview__row {
+    grid-template-columns: 1fr;
+  }
+
+  .services-overview__row-image {
+    min-height: 200px;
+    order: -1; /* show the image above the text */
+  }
+
   .services-overview__row-text {
     padding: 30px 20px;
   }
@@ -402,7 +560,7 @@
   }
 
   .partners-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     margin: 0 20px;
   }
 
@@ -430,5 +588,191 @@
   .footer__newsletter-form button {
     border-radius: 4px;
     padding: 10px;
+  }
+}
+
+/* ── TABLET: 768px–1024px ────────────────────────────────────
+   Desktop layout (>=1025px) is untouched. These rules only
+   apply in the tablet range to relieve the fixed desktop sizes
+   (1500px container / 60px gutters / 700px image cells / large
+   headings) that would otherwise cramp or overflow on iPads. */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Tighter page gutters across all container-based sections */
+  .container,
+  .hero__content,
+  .who-section__inner,
+  .home-services__header,
+  .service-row__content,
+  .works-grid,
+  .contact-section__inner,
+  .footer__inner,
+  .stats-grid,
+  .blogs-grid,
+  .services-overview__inner,
+  .knowledge,
+  .service-section__content {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  /* HERO */
+  .hero__title-big {
+    font-size: 54px;
+  }
+
+  /* WHO WE ARE — keep two columns, shrink the mosaic height + gap */
+  .who-section {
+    padding: 80px 0;
+  }
+
+  .who-section__inner {
+    gap: 40px;
+  }
+
+  .who-section__images {
+    height: 460px;
+    gap: 12px;
+  }
+
+  .who-section__img--red {
+    flex: 0 0 90px;
+  }
+
+  /* QUOTE */
+  .quote-section__text {
+    font-size: 30px;
+    max-width: 90%;
+  }
+
+  .quote-section__deco {
+    width: 320px;
+    height: 320px;
+  }
+
+  /* HOME SERVICES */
+  .home-services__header {
+    gap: 40px;
+  }
+
+  .home-services__header-left .section-title {
+    font-size: 36px;
+  }
+
+  .service-row {
+    min-height: 280px;
+  }
+
+  .service-row__title {
+    font-size: 32px;
+  }
+
+  /* LATEST WORKS — 3-up is cramped at this width; go 2-up */
+  .latest-works__header .section-title {
+    font-size: 44px;
+  }
+
+  .works-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .works-tabs {
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+
+  /* CTA */
+  .cta-section__title {
+    font-size: 44px;
+  }
+
+  /* KNOWLEDGE IS POWER (home) — banner + tall cells far shorter */
+  .knowledge {
+    padding: 70px 40px;
+  }
+
+  .knowledge__banner {
+    height: 280px;
+  }
+
+  .knowledge__banner-title {
+    font-size: 46px;
+  }
+
+  .knowledge__cell {
+    min-height: 240px;
+  }
+
+  .knowledge__cell--tall,
+  .knowledge__cell--text .knowledge__img {
+    flex: 0 0 460px;
+    height: 460px;
+  }
+
+  .knowledge__panel-content {
+    padding: 32px 36px;
+  }
+
+  /* TEAM */
+  .team-section__heading {
+    font-size: 60px;
+  }
+
+  .team-carousel {
+    padding: 0 40px;
+  }
+
+  /* CONTACT — keep 2-col but reduce the oversized heading */
+  .contact-section__right-heading {
+    font-size: 56px;
+  }
+
+  .contact-info-card {
+    padding: 40px 32px;
+  }
+
+  /* STATS — 4 across is tight; go 2×2 on tablet */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-item:nth-child(2n) {
+    border-right: none;
+  }
+
+  .stat-item:nth-child(1),
+  .stat-item:nth-child(2) {
+    border-bottom: 1px solid #222;
+  }
+
+  /* SERVICES PAGE */
+  .service-section__title {
+    font-size: 56px;
+  }
+
+  .service-section__content {
+    padding-top: 120px;
+    padding-bottom: 120px;
+  }
+
+  .services-overview__row-title {
+    font-size: 28px;
+  }
+
+  /* PORTFOLIO showroom — 3 columns holds up fine at this width */
+
+  /* BLOGS — 3 columns is too tight; go 2-up on tablet */
+  .blogs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* CAREERS — single wide column is too sparse; 2-up */
+  .careers-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 40px;
+  }
+
+  /* BLOGS featured (knowledge-grid on blogs page) */
+  .knowledge-section__title {
+    font-size: 46px;
   }
 }

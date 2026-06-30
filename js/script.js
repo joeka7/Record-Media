@@ -18,22 +18,152 @@
     });
   }
 
-  /* ── MOBILE MENU TOGGLE ─────────────────────────────────── */
-  const menuToggle = document.querySelector('.menu-toggle');
-  const navLinks   = document.querySelector('.navbar__links');
+  /* ── OFF-CANVAS MOBILE / TABLET NAV DRAWER ──────────────────
+     Enhances the existing .menu-toggle + .navbar__links into a
+     left slide-in drawer. No per-page HTML is required: the
+     backdrop and the drawer "Contact Us" CTA are created here.
+     Accessibility: aria-expanded/controls, role=dialog + aria-modal,
+     Escape to close, focus moved into the drawer and restored to the
+     toggle on close, and a Tab focus-trap while open. */
+  var menuToggle = document.querySelector('.menu-toggle');
+  var navLinks = document.querySelector('.navbar__links');
 
   if (menuToggle && navLinks) {
+    /* Ensure the drawer is identifiable for ARIA */
+    if (!navLinks.id) navLinks.id = 'primary-nav';
+
+    menuToggle.setAttribute('aria-controls', navLinks.id);
+    menuToggle.setAttribute('aria-haspopup', 'true');
+    menuToggle.setAttribute('aria-expanded', 'false');
+
+    /* Drawer dialog semantics apply ONLY in drawer mode (<=1024px).
+       On desktop the same <ul> is an ordinary inline nav, so we strip
+       the dialog role there to avoid misleading screen readers. */
+    var drawerMq = window.matchMedia('(max-width: 1024px)');
+
+    function syncDrawerRole() {
+      if (drawerMq.matches) {
+        navLinks.setAttribute('role', 'dialog');
+        navLinks.setAttribute('aria-modal', 'true');
+        navLinks.setAttribute('aria-label', 'Main menu');
+      } else {
+        navLinks.removeAttribute('role');
+        navLinks.removeAttribute('aria-modal');
+        navLinks.removeAttribute('aria-label');
+      }
+    }
+    syncDrawerRole();
+    if (drawerMq.addEventListener) {
+      drawerMq.addEventListener('change', syncDrawerRole);
+    } else if (drawerMq.addListener) {
+      drawerMq.addListener(syncDrawerRole); /* older Safari */
+    }
+
+    /* Backdrop (created once, reused) */
+    var backdrop = document.createElement('div');
+    backdrop.className = 'nav-backdrop';
+    backdrop.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(backdrop);
+
+    /* Surface the "Contact Us" CTA inside the drawer (it's hidden in
+       the bar below desktop). Clone it so the desktop one is untouched. */
+    var ctaSource = document.querySelector('.navbar__cta .btn-contact');
+    if (ctaSource) {
+      var ctaItem = document.createElement('li');
+      ctaItem.className = 'navbar__drawer-cta';
+      var ctaClone = ctaSource.cloneNode(true);
+      ctaItem.appendChild(ctaClone);
+      navLinks.appendChild(ctaItem);
+    }
+
+    var lastFocused = null;
+
+    /* Focusable elements while the drawer is open: the toggle (acts as
+       the close button) plus everything inside the drawer. Keeping the
+       toggle in the loop lets keyboard users reach the close control. */
+    function focusableItems() {
+      var inside = navLinks.querySelectorAll('a[href], button:not([disabled])');
+      return [menuToggle].concat(Array.prototype.slice.call(inside));
+    }
+
+    function openMenu() {
+      lastFocused = document.activeElement;
+      menuToggle.classList.add('active');
+      navLinks.classList.add('open');
+      backdrop.classList.add('open');
+      menuToggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden'; /* lock body scroll */
+      /* Move focus to the first link inside the drawer */
+      var firstLink = navLinks.querySelector('a[href]');
+      if (firstLink) firstLink.focus();
+    }
+
+    function closeMenu(restoreFocus) {
+      menuToggle.classList.remove('active');
+      navLinks.classList.remove('open');
+      backdrop.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      if (restoreFocus !== false && lastFocused) lastFocused.focus();
+    }
+
+    function isOpen() {
+      return navLinks.classList.contains('open');
+    }
+
     menuToggle.addEventListener('click', function () {
-      menuToggle.classList.toggle('active');
-      navLinks.classList.toggle('open');
+      if (isOpen()) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
 
-    /* Close on link click */
+    /* Close when the backdrop is clicked */
+    backdrop.addEventListener('click', function () {
+      closeMenu();
+    });
+
+    /* Close when any nav link is selected (don't steal focus — let the
+       link navigate / scroll) */
     navLinks.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
-        menuToggle.classList.remove('active');
-        navLinks.classList.remove('open');
+        closeMenu(false);
       });
+    });
+
+    /* Keyboard: Escape closes; Tab is trapped inside the open drawer */
+    document.addEventListener('keydown', function (e) {
+      if (!isOpen()) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeMenu();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        var items = focusableItems();
+        if (!items.length) return;
+        var firstEl = items[0];
+        var lastEl = items[items.length - 1];
+
+        if (e.shiftKey && document.activeElement === firstEl) {
+          e.preventDefault();
+          lastEl.focus();
+        } else if (!e.shiftKey && document.activeElement === lastEl) {
+          e.preventDefault();
+          firstEl.focus();
+        }
+      }
+    });
+
+    /* If the viewport grows back to desktop while the drawer is open,
+       reset cleanly so the inline nav isn't left in a locked state. */
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 1024 && isOpen()) {
+        closeMenu(false);
+      }
     });
   }
 
