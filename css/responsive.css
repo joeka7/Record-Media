@@ -227,11 +227,19 @@
   }
 
   .team-card {
-    width: 200px;
+    width: 240px;
   }
 
   .team-card__photo {
-    height: 250px;
+    height: 320px;
+  }
+
+  .team-card__role {
+    font-size: 18px;
+  }
+
+  .team-card__name {
+    font-size: 26px;
   }
 
   /* CONTACT */
@@ -309,13 +317,27 @@
     font-size: 30px;
   }
 
-  .knowledge__grid {
-    grid-template-columns: 1fr;
-    grid-auto-rows: 240px;
+  /* Stack the two column-grids into one column on mobile */
+  .knowledge__grids {
+    flex-direction: column;
   }
 
-  .knowledge__cell-content {
-    padding: 24px;
+  .knowledge__cell {
+    min-height: 220px;
+  }
+
+  .knowledge__cell--tall,
+  .knowledge__cell--text .knowledge__img {
+    flex: none;
+    height: 360px;
+  }
+
+  .knowledge__panel-content {
+    padding: 28px 24px;
+  }
+
+  .knowledge__label {
+    font-size: 18px;
   }
 
   /* SERVICES OVERVIEW */

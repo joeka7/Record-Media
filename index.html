@@ -429,9 +429,6 @@
       </div>
     </section>
 
-    <!-- Divider -->
-    <hr class="footer-divider" />
-
     <!-- ═══════════════════════════════════════════════════════
        KNOWLEDGE IS POWER
   ════════════════════════════════════════════════════════ -->
@@ -451,57 +448,67 @@
         </div>
       </div>
 
-      <!-- Mosaic grid -->
-      <div class="knowledge__grid">
-        <!-- Top-left: plain image -->
-        <div class="knowledge__cell">
-          <img
-            class="knowledge__img knowledge__img--1"
-            src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80"
-            alt="Tax documents and calculator"
-          />
-        </div>
+      <!-- Mosaic: two side-by-side column grids -->
+      <div class="knowledge__grids">
+        <!-- ── Grid 1 (left column) ── -->
+        <div class="knowledge__grid">
+          <!-- Image 1: tax docs (normal) -->
+          <div class="knowledge__cell">
+            <img
+              class="knowledge__img knowledge__img--1"
+              src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80"
+              alt="Tax documents and calculator"
+            />
+          </div>
 
-        <!-- Top-right: office meeting -->
-        <div class="knowledge__cell">
-          <img
-            class="knowledge__img knowledge__img--2"
-            src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
-            alt="Office meeting room"
-          />
-        </div>
-
-        <!-- Bottom-left: image + text overlay -->
-        <div
-          class="knowledge__cell knowledge__cell--text"
-          style="
-            background-image: url(&quot;https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&q=80&quot;);
-          "
-        >
-          <div class="knowledge__cell-overlay"></div>
-          <div class="knowledge__cell-content">
-            <p class="knowledge__label">
-              STRATEGIES FOR<br />SUCCESS IN A DYNAMIC WORLD
-            </p>
-            <p class="knowledge__desc">
-              Business, the heartbeat of the global economy, is an ever-evolving
-              landscape where innovation, competition, and adaptability reign
-              supreme.
-            </p>
-            <a href="blogs.html" class="knowledge__read-more">
-              Read More
-              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-            </a>
+          <!-- Image 2: man walking (TALL 700px) + text overlay panel -->
+          <div class="knowledge__cell knowledge__cell--text knowledge__cell--tall">
+            <img
+              class="knowledge__img knowledge__img--2"
+              src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&q=80"
+              alt="Businessman walking"
+            />
+            <div class="knowledge__panel">
+              <div class="knowledge__panel-overlay"></div>
+              <div class="knowledge__panel-content">
+                <p class="knowledge__label">
+                  STRATEGIES FOR<br />SUCCESS IN A DYNAMIC WORLD
+                </p>
+                <p class="knowledge__desc">
+                  Business, the heartbeat of the global economy, is an
+                  ever-evolving landscape where innovation, competition, and
+                  adaptability reign supreme.
+                </p>
+                <a href="blogs.html" class="knowledge__read-more">
+                  Read More
+                  <svg viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Bottom-right: group collaborating -->
-        <div class="knowledge__cell">
-          <img
-            class="knowledge__img knowledge__img--3"
-            src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=80"
-            alt="Team collaborating"
-          />
+        <!-- ── Grid 2 (right column) ── -->
+        <div class="knowledge__grid">
+          <!-- Image 1: office meeting (TALL 700px) -->
+          <div class="knowledge__cell knowledge__cell--tall">
+            <img
+              class="knowledge__img knowledge__img--3"
+              src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
+              alt="Office meeting room"
+            />
+          </div>
+
+          <!-- Image 2: group collaborating (normal) -->
+          <div class="knowledge__cell">
+            <img
+              class="knowledge__img knowledge__img--4"
+              src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=80"
+              alt="Team collaborating"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -620,44 +627,29 @@
             <p>Say something to start a live chat!</p>
 
             <div class="contact-info-item">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                stroke-width="2"
-              >
-                <path
-                  d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.09 9.82 19.79 19.79 0 011 1.18 2 2 0 013 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"
-                />
-              </svg>
+              <img
+                class="contact-info-item__icon"
+                src="assets/phone.png"
+                alt="Phone"
+              />
               <span>+1012 3456 789</span>
             </div>
 
             <div class="contact-info-item">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                stroke-width="2"
-              >
-                <path
-                  d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
-                />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
+              <img
+                class="contact-info-item__icon"
+                src="assets/email.png"
+                alt="Email"
+              />
               <span>demo@gmail.com</span>
             </div>
 
             <div class="contact-info-item">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                stroke-width="2"
-              >
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
+              <img
+                class="contact-info-item__icon"
+                src="assets/location.png"
+                alt="Location"
+              />
               <span
                 >132 Dartmouth Street Boston,<br />Massachusetts 02156 United
                 States</span
@@ -744,6 +736,22 @@
     <!-- ═══════════════════════════════════════════════════════
        FOOTER
   ════════════════════════════════════════════════════════ -->
+
+    <!-- Social Bar -->
+    <div class="social-bar">
+      <a href="#" class="social-bar__icon" aria-label="Facebook">
+        <img class="social-bar__icon-img" src="assets/facebook.png" alt="Facebook" />
+      </a>
+      <a href="#" class="social-bar__icon" aria-label="Instagram">
+        <img class="social-bar__icon-img" src="assets/instgram.png" alt="Instagram" />
+      </a>
+      <a href="#" class="social-bar__icon" aria-label="YouTube">
+        <img class="social-bar__icon-img" src="assets/youtube.png" alt="YouTube" />
+      </a>
+      <a href="#" class="social-bar__icon" aria-label="LinkedIn">
+        <img class="social-bar__icon-img" src="assets/linked-in.png" alt="LinkedIn" />
+      </a>
+    </div>
 
     <!-- Main Footer -->
     <footer class="footer">

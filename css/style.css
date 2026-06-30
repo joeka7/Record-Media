@@ -535,13 +535,40 @@ button {
 }
 
 /* ── 11. FOOTER ──────────────────────────────────────────── */
-/* Red divider above the footer (home page only) */
-.footer-divider {
-  width: 100%;
-  border: none;
-  height: 10px;
-  background: var(--red);
-  margin: 0;
+/* Social bar (sits directly above the footer on every page) */
+.social-bar {
+  background: #8a0000;
+  padding: 22px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 34px;
+}
+
+.social-bar__icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    border-color var(--ease),
+    background var(--ease),
+    transform var(--ease);
+}
+
+.social-bar__icon-img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.social-bar__icon:hover {
+  border-color: var(--white);
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-3px);
 }
 
 .footer {
@@ -1357,30 +1384,26 @@ button {
 
 /* ── 20. ABOUT — TEAM SECTION ────────────────────────────── */
 .team-section {
-  background: var(--bg-dark);
+  background: #080000;
   padding: 0;
 }
 
 .team-section__header {
-  background: var(--red);
-  padding: 50px 40px;
+  background: #c20202;
+  padding: 85px 40px;
   text-align: center;
   position: relative;
   overflow: hidden;
 }
 
 .team-section__header::before {
-  content: "OUR TEAM OUR TEAM OUR TEAM OUR TEAM OUR TEAM OUR TEAM";
+  content: "";
   position: absolute;
-  font-size: 80px;
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.06);
-  white-space: nowrap;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  letter-spacing: 8px;
-  text-transform: uppercase;
+  inset: 0;
+  background-image: url("../assets/Heroes.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 .team-section__heading {
@@ -1403,7 +1426,7 @@ button {
 .team-cards {
   display: flex;
   overflow-x: auto;
-  gap: 6px;
+  gap: 30px;
   padding: 30px 0;
   scrollbar-width: none;
   cursor: grab;
@@ -1425,7 +1448,7 @@ button {
 
 .team-card {
   flex-shrink: 0;
-  width: 260px;
+  width: 300px;
   border-radius: 4px;
   overflow: hidden;
   position: relative;
@@ -1433,38 +1456,39 @@ button {
 
 .team-card__photo {
   width: 100%;
-  height: 320px;
+  height: 420px;
   object-fit: cover;
   object-position: top;
   display: block;
 }
 
 .team-card__info {
-  background: var(--bg-dark);
-  padding: 14px 16px;
+  background: #c2020280;
+  padding: 22px 16px 26px;
   text-align: center;
 }
 
 .team-card__role {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 2px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--white);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .team-card__name {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 30px;
+  font-weight: 800;
   color: var(--red);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  line-height: 1.05;
 }
 
 /* ── 21. CONTACT FORM SECTION ────────────────────────────── */
 .contact-section {
-  background: var(--bg-dark);
+  background: #080000;
   padding: 80px 0;
 }
 
@@ -1478,16 +1502,16 @@ button {
 }
 
 .contact-section__right-label {
-  font-size: 13px;
-  font-weight: 600;
-  font-style: italic;
+  font-size: 18px;
+  font-weight: 700;
   color: var(--red);
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   text-align: center;
+  letter-spacing: 0.5px;
 }
 
 .contact-section__right-heading {
-  font-size: 52px;
+  font-size: 76px;
   font-weight: 900;
   text-transform: uppercase;
   text-align: center;
@@ -1501,80 +1525,74 @@ button {
 
 /* Intro paragraph (home page contact section) */
 .contact-section__intro {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
   color: var(--white);
   line-height: 1.9;
 }
 
-/* Home variant: left-align the label + heading to match the layout */
-.contact-section--home .contact-section__right-label,
-.contact-section--home .contact-section__right-heading {
-  text-align: left;
-}
-
 .contact-info-card {
-  background: linear-gradient(160deg, var(--red) 0%, #5a0018 100%);
+  background: linear-gradient(160deg, #8a0014 0%, #5a0010 100%);
   border-radius: 8px;
-  padding: 36px 30px;
+  padding: 50px 40px;
   position: relative;
   overflow: hidden;
+  height: 100%;
 }
 
 .contact-info-card::before {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  bottom: -90px;
+  left: -70px;
+}
+
+.contact-info-card::after {
   content: "";
   position: absolute;
   width: 200px;
   height: 200px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.05);
-  bottom: -60px;
-  left: -60px;
-}
-
-.contact-info-card::after {
-  content: "";
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.04);
-  bottom: 40px;
-  right: -30px;
+  bottom: 60px;
+  right: -40px;
 }
 
 .contact-info-card h3 {
-  font-size: 18px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--white);
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 
 .contact-info-card > p {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 30px;
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 70px;
 }
 
 .contact-info-item {
   display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  margin-bottom: 20px;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 36px;
   position: relative;
   z-index: 2;
 }
 
-.contact-info-item svg {
-  width: 20px;
-  height: 20px;
-  fill: var(--white);
+.contact-info-item__icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
   flex-shrink: 0;
-  margin-top: 2px;
 }
 
 .contact-info-item span {
-  font-size: 13px;
+  font-size: 16px;
   color: var(--white);
   line-height: 1.6;
 }
@@ -1598,7 +1616,7 @@ button {
 }
 
 .form-group label {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--gray-light);
   letter-spacing: 0.5px;
@@ -1609,11 +1627,11 @@ button {
 .form-group select {
   background: transparent;
   border: none;
-  border-bottom: 1px solid #444;
+  border-bottom: 1px solid #555;
   color: var(--white);
   font-family: var(--font);
-  font-size: 14px;
-  padding: 10px 0;
+  font-size: 15px;
+  padding: 12px 0;
   outline: none;
   transition: border-color var(--ease);
   width: 100%;
@@ -1668,14 +1686,13 @@ button {
 
 .form-submit button {
   background: transparent;
-  border: 1.5px solid var(--white);
+  border: 1.5px solid var(--red);
   color: var(--white);
   font-family: var(--font);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 14px 36px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 16px 40px;
   cursor: pointer;
   border-radius: 4px;
   transition:
@@ -1684,8 +1701,8 @@ button {
 }
 
 .form-submit button:hover {
-  background: var(--white);
-  color: var(--bg-dark);
+  background: var(--red);
+  color: var(--white);
 }
 
 /* ── 22. BLOG PAGE ───────────────────────────────────────── */
@@ -1974,16 +1991,44 @@ button {
   color: var(--red);
 }
 
-/* Mosaic grid: 2 columns × 2 rows */
-.knowledge__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-auto-rows: 320px;
+/* Two side-by-side column grids (stretch to equal height) */
+.knowledge__grids {
+  display: flex;
+  align-items: stretch;
 }
 
+.knowledge__grid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Normal cells grow to balance the two columns to equal height */
 .knowledge__cell {
   position: relative;
   overflow: hidden;
+  flex: 1;
+  min-height: 320px;
+}
+
+/* Tall image cells stay fixed at 700px */
+.knowledge__cell--tall {
+  flex: 0 0 700px;
+  height: 700px;
+}
+
+/* The text cell holds a tall image + a text panel beneath it,
+   so it is taller than 700px and stacks its children vertically. */
+.knowledge__cell--text {
+  height: auto;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+}
+
+.knowledge__cell--text .knowledge__img {
+  height: 700px;
+  flex-shrink: 0;
 }
 
 /* Shared base for every grid image */
@@ -2000,66 +2045,82 @@ button {
 
 /* Per-image hooks — customize each one individually here */
 .knowledge__img--1 {
-  /* top-left (tax documents) */
+  /* tax documents */
   object-position: center;
 }
 
 .knowledge__img--2 {
-  /* top-right (office meeting) */
+  /* man walking (tall, left) */
   object-position: center;
 }
 
 .knowledge__img--3 {
-  /* bottom-right (team collaborating) */
+  /* office meeting (tall, right) */
   object-position: center;
 }
 
-/* Bottom-left cell carries the article text over a bg image */
-.knowledge__cell--text {
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  align-items: flex-end;
+.knowledge__img--4 {
+  /* team collaborating */
+  object-position: center;
 }
 
-.knowledge__cell-overlay {
+/* Text panel that sits below the tall image */
+.knowledge__panel {
+  position: absolute;
+  flex: 1;
+  min-height: 230px;
+  background: #8f8f8f8c;
+  display: flex;
+  width: 100%;
+  bottom: 0;
+}
+
+/* Dark gradient + faint diagonal stripe texture (echoes the photo above) */
+.knowledge__panel-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.25) 0%,
-    rgba(0, 0, 0, 0.8) 100%
-  );
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 22px,
+      rgba(0, 0, 0, 0) 22px,
+      rgba(0, 0, 0, 0) 60px
+    ),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.9) 100%);
 }
 
-.knowledge__cell-content {
+.knowledge__panel-content {
   position: relative;
   z-index: 2;
-  padding: 40px;
+  padding: 40px 50px 36px;
+  width: 100%;
 }
 
 .knowledge__label {
-  font-size: 16px;
+  font-size: 22px;
   font-weight: 800;
   color: var(--red);
   text-transform: uppercase;
   line-height: 1.2;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .knowledge__desc {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
   line-height: 1.7;
-  margin-bottom: 18px;
-  max-width: 340px;
+  margin-bottom: 24px;
+  max-width: 520px;
 }
 
 .knowledge__read-more {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 12px;
+  justify-content: flex-end;
+  gap: 10px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--white);
   letter-spacing: 1px;
@@ -2068,15 +2129,15 @@ button {
 }
 
 .knowledge__read-more svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   fill: none;
   stroke: var(--red);
   stroke-width: 2.5;
 }
 
 .knowledge__read-more:hover {
-  gap: 14px;
+  gap: 16px;
 }
 
 /* ── 23. CAREERS PAGE ────────────────────────────────────── */
