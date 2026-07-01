@@ -364,6 +364,69 @@
     );
   });
 
+  /* ── PARTNERS: auto-scroll logo marquee (MOBILE ONLY) ───────
+     On <=767px the 3x3 partners grid becomes a single-row infinite
+     auto-scrolling logo strip. Desktop/tablet keep the grid untouched.
+     Built once, only when the mobile media query matches. */
+  (function () {
+    var grid = document.querySelector('.partners-grid');
+    if (!grid) return;
+
+    var mq = window.matchMedia('(max-width: 767px)');
+    var built = false;
+    var rafId = null;
+    var paused = false;
+    var setWidth = 0;
+
+    function buildMarquee() {
+      if (built) return;
+      built = true;
+
+      grid.classList.add('partners-grid--carousel');
+
+      /* Duplicate the cells once so the strip loops seamlessly */
+      var cells = Array.prototype.slice.call(grid.children);
+      cells.forEach(function (cell) {
+        var clone = cell.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        grid.appendChild(clone);
+      });
+
+      setWidth = grid.scrollWidth / 2; /* width of one original set */
+
+      /* Pause on touch/hover so users can look */
+      grid.addEventListener('pointerdown', function () { paused = true; });
+      grid.addEventListener('pointerup', function () { paused = false; });
+      grid.addEventListener('mouseenter', function () { paused = true; });
+      grid.addEventListener('mouseleave', function () { paused = false; });
+
+      var SPEED = 0.5; /* px per frame */
+      function tick() {
+        if (!paused) {
+          grid.scrollLeft += SPEED;
+          if (grid.scrollLeft >= setWidth) {
+            grid.scrollLeft -= setWidth;
+          }
+        }
+        rafId = window.requestAnimationFrame(tick);
+      }
+      rafId = window.requestAnimationFrame(tick);
+    }
+
+    /* Build now if we load on mobile, and if the viewport later crosses
+       into mobile. (Once built it stays — desktop just won't scroll.) */
+    if (mq.matches) buildMarquee();
+
+    function onChange(e) {
+      if (e.matches) buildMarquee();
+    }
+    if (mq.addEventListener) {
+      mq.addEventListener('change', onChange);
+    } else if (mq.addListener) {
+      mq.addListener(onChange);
+    }
+  })();
+
   /* ── SCROLL REVEAL (fade-in) ─────────────────────────────── */
   var fadeEls = document.querySelectorAll('.fade-in');
 
@@ -473,17 +536,36 @@
     });
   }
 
-  /* ── SERVICE PAGE: keyboard navigation between sections ── */
-  var serviceSections = document.querySelectorAll('.service-section');
+  /* ── SERVICE PAGE: prev/next section navigation via pills ── */
+  var serviceSections = Array.prototype.slice.call(
+    document.querySelectorAll('.service-section')
+  );
 
   if (serviceSections.length > 1) {
-    var current = 0;
-
     document.querySelectorAll('.service-nav-pill').forEach(function (pill) {
-      pill.addEventListener('click', function () {
-        var dir = pill.classList.contains('service-nav-pill--top') ? -1 : 1;
-        current = Math.max(0, Math.min(serviceSections.length - 1, current + dir));
-        serviceSections[current].scrollIntoView({ behavior: 'smooth' });
+      /* Direction relative to the pill's OWN section, so it's always
+         accurate regardless of how the user got here. */
+      var section = pill.closest('.service-section');
+      var idx = serviceSections.indexOf(section);
+      var isUp = pill.classList.contains('service-nav-pill--top');
+
+      function go() {
+        if (isUp) {
+          /* Previous service section, or the hero if this is the first one */
+          var prev = serviceSections[idx - 1] || document.querySelector('.hero');
+          if (prev) prev.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          var next = serviceSections[idx + 1];
+          if (next) next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      pill.addEventListener('click', go);
+      pill.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          go();
+        }
       });
     });
   }
@@ -498,6 +580,40 @@
       }
     });
   });
+
+  /* ── SCROLL INDICATOR: smooth-scroll to the next section ──── */
+  var scrollIndicator = document.querySelector('.scroll-indicator');
+  if (scrollIndicator) {
+    var scrollIcon =
+      scrollIndicator.querySelector('.scroll-indicator__icon') ||
+      scrollIndicator;
+
+    scrollIcon.style.cursor = 'pointer';
+    scrollIcon.setAttribute('role', 'button');
+    scrollIcon.setAttribute('tabindex', '0');
+    scrollIcon.setAttribute('aria-label', 'Scroll to next section');
+
+    function scrollToNextSection() {
+      var hero = document.querySelector('.hero');
+      if (!hero) return;
+      /* First real section after the hero */
+      var next = hero.nextElementSibling;
+      while (next && next.offsetHeight === 0) {
+        next = next.nextElementSibling;
+      }
+      if (next) {
+        next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    scrollIcon.addEventListener('click', scrollToNextSection);
+    scrollIcon.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        scrollToNextSection();
+      }
+    });
+  }
 
   /* ── TICKER: duplicate content for seamless loop ─────────── */
   var tracks = document.querySelectorAll('.ticker-track');

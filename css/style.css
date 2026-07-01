@@ -128,7 +128,7 @@ button {
 }
 
 .navbar__logo img {
-  height: 50px;
+  height: 40px;
   width: auto;
 }
 
@@ -272,26 +272,16 @@ button {
   z-index: 10;
   width: 100%;
   max-width: var(--max-w);
-  margin: auto auto 0 auto;
+  margin: auto auto 280px auto;
   padding: 0 60px 80px 60px;
 }
 
 .hero__play-icon {
   width: 50px;
   height: 50px;
-  background: var(--red);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
+  object-fit: contain;
   margin-bottom: 20px;
-}
-
-.hero__play-icon svg {
-  width: 18px;
-  height: 18px;
-  fill: var(--white);
-  margin-left: 3px;
 }
 
 .hero__pre {
@@ -304,7 +294,7 @@ button {
 }
 
 .hero__title {
-  font-size: 18px;
+  font-size: 30px;
   font-weight: 600;
   color: var(--white);
   text-transform: uppercase;
@@ -313,7 +303,7 @@ button {
 }
 
 .hero__title-big {
-  font-size: 68px;
+  font-size: 80px;
   font-weight: 800;
   color: var(--white);
   text-transform: uppercase;
@@ -322,12 +312,13 @@ button {
 }
 
 .hero__subtitle {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--white);
   letter-spacing: 3px;
   text-transform: uppercase;
   margin-top: 10px;
+  width: 300px;
 }
 
 .hero__bottom-line {
@@ -340,37 +331,73 @@ button {
   z-index: 20;
 }
 
-/* Scroll indicator capsule */
+/* Scroll indicator — aligned to the same container as page content.
+   The shadow pill sits behind, the red down-icon overlaps its bottom. */
 .scroll-indicator {
   position: absolute;
-  left: 40px;
-  bottom: 30px;
+  /* Line up with the container's left content edge (1500px, 60px gutter) */
+  left: calc(max(0px, (100% - var(--max-w)) / 2) + 60px);
+  bottom: 65px;
   z-index: 15;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  /* Entrance on page load: fade + slide up into place */
+  animation: scroll-indicator-in 0.8s ease 0.4s both;
 }
 
-.scroll-indicator__pill {
-  width: 36px;
-  height: 68px;
-  background: linear-gradient(
-    180deg,
-    rgba(180, 0, 30, 0.2) 0%,
-    var(--red) 100%
-  );
-  border-radius: 20px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 10px;
+@keyframes scroll-indicator-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.scroll-indicator__pill svg {
-  width: 14px;
-  height: 14px;
-  fill: var(--white);
+.scroll-indicator__shadow {
+  width: 50px;
+  height: auto;
+  display: block;
+}
+
+/* Red down-icon overlaps the bottom of the shadow pill — clickable.
+   Gentle continuous bounce invites scrolling. */
+.scroll-indicator__icon {
+  width: 50px;
+  height: auto;
+  display: block;
+  margin-top: -50px;
+  cursor: pointer;
+  animation: scroll-icon-bounce 1.8s ease-in-out 1.2s infinite;
+  transition: filter var(--ease);
+}
+
+@keyframes scroll-icon-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+/* Pause the bounce on hover so the hover nudge reads cleanly */
+.scroll-indicator__icon:hover {
+  animation-play-state: paused;
+  transform: translateY(6px);
+  filter: brightness(1.1);
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-indicator,
+  .scroll-indicator__icon {
+    animation: none;
+  }
 }
 
 /* ── 7. BUTTONS ──────────────────────────────────────────── */
@@ -806,26 +833,25 @@ button {
 .quote-section {
   padding: 120px 40px;
   position: relative;
-  overflow: hidden;
   text-align: center;
 }
 
 .quote-section__deco {
   position: absolute;
-  width: 440px;
+  width: 340px;
   height: 420px;
   background: #c2020280;
   border-radius: 48px;
 }
 
 .quote-section__deco--tr {
-  top: -100px;
-  right: -120px;
+  top: -50px;
+  right: 300px;
 }
 
 .quote-section__deco--bl {
-  bottom: -100px;
-  left: -120px;
+  bottom: -50px;
+  left: 300px;
 }
 
 .quote-section__text {
@@ -868,7 +894,9 @@ button {
   padding-top: 6px;
 }
 
-/* Full-width image band; text overlays on top, aligned to container */
+/* Full-width image band; text overlays on top, aligned to container.
+   The inline background-image set in the HTML is inherited by ::after
+   (the zoomable photo layer), so each row zooms its own photo. */
 .service-row {
   position: relative;
   min-height: 330px;
@@ -886,6 +914,21 @@ button {
   border-bottom: 2px solid var(--red);
 }
 
+/* Zoomable photo layer — inherits the row's inline background-image.
+   Sits behind the gradient + text; scaled with transform (GPU-smooth). */
+.service-row::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: inherit;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
 /* Dark gradient over the photo so overlaid text stays readable */
 .service-row::before {
   content: "";
@@ -898,6 +941,26 @@ button {
     rgba(8, 0, 0, 0.35) 100%
   );
   z-index: 1;
+  transition: opacity 0.5s ease;
+  will-change: opacity;
+}
+
+/* ── Hover: smoothly zoom the photo, lighten overlay, nudge text ── */
+.service-row:hover::after {
+  transform: scale(1.08);
+}
+
+.service-row:hover::before {
+  opacity: 0.5;
+}
+
+.service-row__content {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.service-row:hover .service-row__content {
+  transform: translateX(14px);
 }
 
 /* Text block aligned to the same container as the header */
@@ -1179,10 +1242,20 @@ button {
   margin-bottom: 60px;
 }
 
+/* Clients label sits neatly above the title with even spacing */
+.partners-section__header .section-label-img {
+  max-width: 120px;
+  margin: 0 auto 14px;
+}
+
+.partners-section__header .section-title {
+  font-size: 42px;
+}
+
 .partners-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  max-width: 1100px;
+  max-width: 1300px;
   margin: 0 auto;
 }
 
@@ -1200,10 +1273,6 @@ button {
 .partner-cell:nth-child(-n + 3),
 .partner-cell:nth-child(n + 7) {
   background: #150000;
-}
-
-.partner-cell:nth-child(n + 4):nth-child(-n + 6) {
-  background: #100808;
 }
 
 /* Drop the outer-edge borders so only inner dividers show */
@@ -1263,10 +1332,18 @@ button {
   );
 }
 
+/* Content is a full-width container (1500px, 60px gutter) so it starts
+   at the same left edge as every other section; the text stays capped. */
 .service-section__content {
   position: relative;
   z-index: 2;
-  padding: 120px 80px;
+  width: 100%;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 120px 60px;
+}
+
+.service-section__content > * {
   max-width: 640px;
 }
 
@@ -1309,18 +1386,8 @@ button {
   transition: transform var(--ease);
 }
 
-.service-nav-pill--top {
-  top: 160px;
-  background: linear-gradient(
-    180deg,
-    rgba(200, 0, 40, 0.2) 0%,
-    var(--red) 100%
-  );
-  transform: rotate(180deg);
-}
-
 .service-nav-pill--bottom {
-  bottom: 30px;
+  bottom: 65px;
   background: linear-gradient(
     180deg,
     rgba(200, 0, 40, 0.2) 0%,
@@ -1334,12 +1401,122 @@ button {
   fill: var(--white);
 }
 
-.service-nav-pill:hover {
-  transform: scale(1.05);
+/* ── Prev/next section controls: red icon over a translucent pill,
+   both aligned to the container edge like page content. ── */
+.service-nav-pill--top,
+.service-nav-pill--bottom {
+  left: calc(max(0px, (100% - var(--max-w)) / 2) + 60px);
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: none;
+  flex-direction: column;
+  align-items: center;
 }
 
-.service-nav-pill--top:hover {
-  transform: rotate(180deg) scale(1.05);
+.service-nav-pill--top {
+  top: 65px;
+  /* Entrance: fade + slide DOWN into place */
+  animation: nav-pill-in-down 0.8s ease 0.4s both;
+}
+
+.service-nav-pill--bottom {
+  bottom: 65px;
+  /* Entrance: fade + slide UP into place */
+  animation: nav-pill-in-up 0.8s ease 0.4s both;
+}
+
+@keyframes nav-pill-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes nav-pill-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Shared image sizing */
+.service-nav-pill__icon,
+.service-nav-pill__shadow {
+  width: 50px;
+  height: auto;
+  display: block;
+}
+
+.service-nav-pill__icon {
+  position: relative;
+  z-index: 2;
+  transition: filter var(--ease);
+}
+
+/* TOP: icon on top, pill pulled up beneath it; icon bounces UP */
+.service-nav-pill--top .service-nav-pill__shadow {
+  margin-top: -50px;
+}
+
+.service-nav-pill--top .service-nav-pill__icon {
+  animation: nav-pill-bounce-up 1.8s ease-in-out 1.2s infinite;
+}
+
+/* BOTTOM: pill on top, icon pulled up to overlap its bottom; bounces DOWN */
+.service-nav-pill--bottom .service-nav-pill__icon {
+  margin-top: -50px;
+  animation: nav-pill-bounce-down 1.8s ease-in-out 1.2s infinite;
+}
+
+@keyframes nav-pill-bounce-up {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes nav-pill-bounce-down {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+/* Pause the bounce on hover so the hover nudge reads cleanly */
+.service-nav-pill--top:hover .service-nav-pill__icon {
+  animation-play-state: paused;
+  transform: translateY(-6px);
+  filter: brightness(1.1);
+}
+
+.service-nav-pill--bottom:hover .service-nav-pill__icon {
+  animation-play-state: paused;
+  transform: translateY(6px);
+  filter: brightness(1.1);
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .service-nav-pill--top,
+  .service-nav-pill--bottom,
+  .service-nav-pill__icon {
+    animation: none;
+  }
 }
 
 /* ── 19. PORTFOLIO PAGE ──────────────────────────────────── */

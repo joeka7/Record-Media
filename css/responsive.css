@@ -151,7 +151,7 @@
 
   .scroll-indicator {
     left: 20px;
-    bottom: 20px;
+    bottom: 50px;
   }
 
   /* SECTIONS */
@@ -187,6 +187,7 @@
   /* QUOTE */
   .quote-section {
     padding: 60px 20px;
+    overflow: hidden;
   }
 
   .quote-section__text {
@@ -195,17 +196,17 @@
 
   /* Shrink the decorative circles so they don't cause horizontal scroll */
   .quote-section__deco {
-    width: 220px;
-    height: 220px;
+    width: 200px;
+    height: 200px;
   }
 
   .quote-section__deco--tr {
-    top: -70px;
+    top: 0px;
     right: -80px;
   }
 
   .quote-section__deco--bl {
-    bottom: -70px;
+    bottom: 0px;
     left: -80px;
   }
 
@@ -244,23 +245,38 @@
     padding-bottom: 8px;
   }
 
-  /* PARTNERS */
+  /* PARTNERS — auto-scrolling logo strip (carousel) on mobile.
+     JS adds .partners-grid--carousel and clones the cells. */
   .partners-grid {
     grid-template-columns: repeat(2, 1fr);
     max-width: 100%;
     margin: 0 20px;
   }
 
-  .partner-cell:nth-child(2n) {
-    border-right: none;
+  .partners-grid--carousel {
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .partner-cell:nth-child(3n) {
-    border-right: 1px solid #333;
+  .partners-grid--carousel::-webkit-scrollbar {
+    display: none;
   }
 
-  .partner-cell:nth-child(2n) {
-    border-right: none;
+  /* Each logo becomes a fixed-width slide; strip the grid borders/tints */
+  .partners-grid--carousel .partner-cell {
+    flex: 0 0 50%;
+    border: none;
+    background: transparent;
+    padding: 30px 20px;
+  }
+
+  .partners-grid--carousel .partner-cell img {
+    width: 130px;
   }
 
   /* TICKER */
@@ -314,7 +330,7 @@
   }
 
   .service-nav-pill {
-    display: none;
+    left: 20px;
   }
 
   /* SHOWROOM */
@@ -346,11 +362,15 @@
   }
 
   .team-card__role {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .team-card__name {
-    font-size: 26px;
+    font-size: 22px;
+  }
+
+  .team-cards {
+    gap: 15px;
   }
 
   /* CONTACT */
@@ -358,6 +378,25 @@
     grid-template-columns: 1fr;
     gap: 30px;
     padding: 0 20px;
+  }
+
+  /* Home layout has 4 grid children: intro, heading, card, form.
+     On mobile show the heading FIRST, then the intro paragraph
+     beneath it (swap children 1 and 2; card + form follow). */
+  .contact-section--home .contact-section__inner > div:nth-child(1) {
+    order: 2; /* intro */
+  }
+
+  .contact-section--home .contact-section__inner > div:nth-child(2) {
+    order: 1; /* heading */
+  }
+
+  .contact-section--home .contact-section__inner > div:nth-child(3) {
+    order: 3; /* contact card */
+  }
+
+  .contact-section--home .contact-section__inner > div:nth-child(4) {
+    order: 4; /* form */
   }
 
   .contact-section__right-label {
@@ -449,11 +488,11 @@
   }
 
   /* KNOWLEDGE IS POWER (home) */
-  .knowledge {
-    padding: 60px 20px;
+  .cta-section {
+    min-height: 350px;
   }
 
-  .knowledge__banner {
+  d .knowledge__banner {
     height: 160px;
   }
 
@@ -526,7 +565,7 @@
 /* ── VERY SMALL MOBILE: max 480px ────────────────────────── */
 @media (max-width: 480px) {
   .hero__title-big {
-    font-size: 30px;
+    font-size: 60px;
   }
 
   .section-title {
